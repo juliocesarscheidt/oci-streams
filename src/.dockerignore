@@ -1,0 +1,8 @@
+*.tfvars
+.terraform
+*.pem
+*.tfstate
+*.backup
+tfplan
+outputs.json
+.env
