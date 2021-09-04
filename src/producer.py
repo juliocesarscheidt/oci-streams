@@ -125,5 +125,5 @@ publish_example_messages(stream_client, s_id)
 # fetch_message_loop(stream_client, s_id, partition_cursor, LIMIT)
 
 # to consumer using group
-# group_cursor = get_cursor_by_group(stream_client, s_id, 'stream_group', 'stream_instance_1')
-# fetch_message_loop(stream_client, s_id, group_cursor, LIMIT)
+group_cursor = get_cursor_by_group(stream_client, s_id, 'kafka-connect-group', 'stream_instance_1')
+fetch_message_loop(stream_client, s_id, group_cursor, LIMIT)

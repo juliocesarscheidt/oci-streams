@@ -58,16 +58,13 @@ deploy:
 
 run-consumer-client:
 	docker-compose up --build -d consumer-client
-	# docker-compose logs -f --tail 50 consumer-client
 
 run-mysql:
 	docker-compose up -d mysql
 
 run-kafka-connect: run-mysql
 	docker-compose up --build -d kafka-connect
-	# docker-compose logs -f --tail 50 kafka-connect
 	docker-compose up --build -d kafka-connect-setup
-	# docker-compose logs -f --tail 50 kafka-connect-setup
 
 destroy:
 	docker-compose stop && docker-compose rm --force
