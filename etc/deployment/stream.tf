@@ -1,6 +1,6 @@
 ############################# Stream Pool #############################
 resource "oci_streaming_stream_pool" "oci_stream_pool" {
-  name           = "oci_stream_pool"
+  name           = "${var.stream_prefix}_oci_stream_pool"
   compartment_id = var.tenancy_ocid
   kafka_settings {
     auto_create_topics_enable = true
@@ -13,7 +13,6 @@ resource "oci_streaming_stream_pool" "oci_stream_pool" {
   #   private_endpoint_ip = "10.0.0.100"
   #   subnet_id           = oci_core_subnet.stream_subnet.id
   # }
-
   freeform_tags = var.tags
 }
 
@@ -32,11 +31,10 @@ output "bootstrap_servers" {
 
 ############################# Stream #############################
 resource "oci_streaming_stream" "oci_stream" {
-  name = "oci_stream"
+  name ="${var.stream_prefix}_oci_stream"
   partitions         = var.stream_partitions
   retention_in_hours = var.stream_retention_in_hours
   stream_pool_id     = oci_streaming_stream_pool.oci_stream_pool.id
-
   freeform_tags = var.tags
 }
 
@@ -46,9 +44,8 @@ output "topic_name" {
 
 ############################# Connect Config #############################
 resource "oci_streaming_connect_harness" "oci_connect_harness" {
+  name ="${var.stream_prefix}_oci_connect_harness"
   compartment_id = var.tenancy_ocid
-  name           = "oci_connect_harness"
-
   freeform_tags = var.tags
 }
 

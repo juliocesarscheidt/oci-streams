@@ -10,6 +10,7 @@ This is a tiny project to try out OCI Streams, using IaC with Terraform and cons
 - [x] Terraform<br>
 - [x] Docker<br>
 - [x] Docker Compose<br>
+- [x] Kafka Connect<br>
 
 ## Instructions
 
@@ -32,14 +33,6 @@ This is a tiny project to try out OCI Streams, using IaC with Terraform and cons
   make deploy
   ```
 
-- Consumer Client
-
-  - Use the Makefile to run the consumer client:
-
-  ```bash
-  make run-consumer-client
-  ```
-
 - Kafka Connect
 
   - Use the Makefile to run the kafka connect:
@@ -48,9 +41,25 @@ This is a tiny project to try out OCI Streams, using IaC with Terraform and cons
   make run-kafka-connect
   ```
 
+- Insert Random Data
+
+  - Use the Makefile to run to insert random data:
+
+  ```bash
+  make run-mysql-insert-data
+  ```
+
+- Consumer Client
+
+  - Use the Makefile to run the consumer client:
+
+  ```bash
+  make run-consumer-client
+  ```
+
 - Clean up
 
-  - Use the Makefile to up the clean the resources on OCI:
+  - Use the Makefile to up the clean the resources from OCI and local containers:
 
   ```bash
   make destroy

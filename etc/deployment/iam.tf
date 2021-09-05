@@ -1,17 +1,8 @@
-data "oci_identity_user" "current_user" {
-  user_id = var.user_ocid
-}
-
-output "oci_identity_user_current_user" {
-  value = data.oci_identity_user.current_user
-}
-
 ############################# Group #############################
 resource "oci_identity_group" "stream_group" {
   compartment_id = var.tenancy_ocid
   description    = "stream group"
   name           = "stream_group"
-
   freeform_tags = var.tags
 }
 
@@ -25,13 +16,9 @@ resource "oci_identity_policy" "stream_group_policy" {
     "Allow group ${oci_identity_group.stream_group.name} to manage streams in tenancy",
     "Allow group ${oci_identity_group.stream_group.name} to use stream-push in tenancy",
     "Allow group ${oci_identity_group.stream_group.name} to use stream-pull in tenancy",
+    "Allow group ${oci_identity_group.stream_group.name} to manage connect-harness in tenancy",
   ]
-
   freeform_tags = var.tags
-}
-
-output "oci_identity_policy" {
-  value = oci_identity_policy.stream_group_policy
 }
 
 ############################# User #############################
@@ -40,14 +27,12 @@ resource "oci_identity_user" "stream_user" {
   description    = "stream user"
   name           = var.stream_user_name
   email          = "${var.stream_user_name}@mail.com"
-
   freeform_tags = var.tags
 }
 
 ############################# User Capabilities #############################
 resource "oci_identity_user_capabilities_management" "stream_user_capabilities_management" {
   user_id = oci_identity_user.stream_user.id
-
   can_use_api_keys             = "true"
   can_use_auth_tokens          = "true"
   can_use_console_password     = "false"
@@ -90,3 +75,12 @@ output "stream_user_api_key_fingerprint" {
 output "stream_user_api_key_value" {
   value = oci_identity_api_key.stream_user_api_key.key_value
 }
+
+############################# Identity #############################
+# data "oci_identity_user" "current_user" {
+#   user_id = var.user_ocid
+# }
+
+# output "oci_identity_user_current_user" {
+#   value = data.oci_identity_user.current_user
+# }

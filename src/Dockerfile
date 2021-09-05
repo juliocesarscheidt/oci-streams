@@ -7,5 +7,4 @@ RUN pip install -r \
     requirements.txt --no-cache-dir
 COPY . .
 
-# ENTRYPOINT ["/bin/bash", "-c", "source secrets && python -u consumer.py"]
 CMD ["python", "-u", "consumer.py"]

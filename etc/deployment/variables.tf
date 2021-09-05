@@ -15,6 +15,11 @@ variable "user_key_fingerprint" {
   type = string
 }
 
+variable "stream_prefix" {
+  type = string
+  default = "kafka"
+}
+
 variable "stream_user_name" {
   type = string
   default = "stream_user"

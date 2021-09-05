@@ -9,6 +9,7 @@ MYSQL_PASS?=
 MYSQL_HOST?=mysql
 MYSQL_PORT?=3306
 MYSQL_DATABASE?=oci_database
+STREAM_PREFIX?=kafka
 
 fmt:
 	cd $(DEPLOY_PATH) && terraform fmt -recursive -write=true
@@ -25,7 +26,8 @@ plan:
 	cd $(DEPLOY_PATH) && terraform plan \
 		-var-file=terraform.tfvars \
 		-out=tfplan \
-		-input=false
+		-input=false \
+		-var stream_prefix=$(STREAM_PREFIX)
 
 apply:
 	cd $(DEPLOY_PATH) && terraform apply \
@@ -35,7 +37,7 @@ apply:
 output:
 	cd $(DEPLOY_PATH) && terraform output -json > outputs.json
 
-	-@rm $(ROOT_PATH)/.env
+	-@rm -f $(ROOT_PATH)/.env
 
 	cd $(DEPLOY_PATH) && \
 		echo "MYSQL_USER=$(MYSQL_USER)" >> $(ROOT_PATH)/.env && \
@@ -61,6 +63,11 @@ run-consumer-client:
 
 run-mysql:
 	docker-compose up -d mysql
+
+run-mysql-insert-data:
+	@$(eval RANDINT=$(shell python -c 'from random import randint; print(randint(1023, 65535));'))
+	docker exec -it mysql sh -c "mysql -u$(MYSQL_USER) -p$(MYSQL_PASS) $(MYSQL_DATABASE) -e \"INSERT INTO users (name, email, password) VALUES ('test-$(RANDINT)', 'test-$(RANDINT)@mail.com', 'password-$(RANDINT)');\""
+	docker exec -it mysql sh -c "mysql -u$(MYSQL_USER) -p$(MYSQL_PASS) $(MYSQL_DATABASE) -e \"SELECT * FROM users;\""
 
 run-kafka-connect: run-mysql
 	docker-compose up --build -d kafka-connect
