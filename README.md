@@ -30,7 +30,7 @@ This is a tiny project to try out OCI Streams, using IaC with Terraform and cons
   - Use the Makefile to create the infrastructure:
 
   ```bash
-  make deploy
+  make deploy MYSQL_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
   ```
 
 - Kafka Connect
